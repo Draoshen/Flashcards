@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/Reverso.TXT</name>
-			<type>1</type>
-			<locationURI>PARENT-1-WORKSPACE_LOC/OneDrive/Escritorio/SoloQ%20Challenge/Reverso.TXT</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

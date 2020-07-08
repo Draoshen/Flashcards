@@ -1,5 +1,7 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Date;
+import java.util.Calendar; 
 
 public class Flashcard {
 	
@@ -7,13 +9,14 @@ public class Flashcard {
 	private String Aleman;
 	private String FraseContexto;
 	private final int printSize = 50;
+	 Calendar fechaRevisar;
 	
 	public Flashcard(String aleman, String espaniol,String contexto) {
 		
 		this.Aleman = aleman;
 		this.Espaniol = espaniol;
 		this.FraseContexto= contexto;
-		
+		this.fechaRevisar = Calendar.getInstance();
 		
 	}
 	
@@ -37,8 +40,13 @@ public class Flashcard {
 	public void setAleman(String aleman) {
 		Aleman = aleman;
 	}
-
-
+	
+	public String getString() {
+		String print = "";
+		print= this.Aleman   +  "-"  +   this.Espaniol+"-"  + this.FraseContexto + "-" +this.fechaRevisar.getTime();
+		return print;
+	}
+	
 	@Override
 	public String toString() {
 		String flechitas="";

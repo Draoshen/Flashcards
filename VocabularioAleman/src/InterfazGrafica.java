@@ -1,20 +1,70 @@
 import java.awt.*;  
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 
 import javax.swing.*;    
 
 public class InterfazGrafica  extends JFrame implements ActionListener{  
-	Launcher pp=new Launcher();
-	ArrayList<Flashcard> tarjetasGraficas;
-	Flashcard tarjetaVisualizada;
+	private Launcher pp=new Launcher();
+	private ArrayList<Flashcard> tarjetasGraficasFull;
+	private ArrayList<Flashcard> tarjetasGraficas;
+	private Flashcard tarjetaVisualizada;
+	private Font fuente1 = new Font("Serif", Font.BOLD, 30);
+/* 
+ * 
+ * Funciona como es debido, pero ahora el problema está en que lo hace cada vez que cambias de tarjeta
+ * que igual no es lo más eficiente
+ * 
+ */
+public void finalizar() {
+	tarjetasGraficas.size();
+	 
+	int contador=0;
+	Flashcard Flash =tarjetasGraficasFull.get(contador);
+	File fileDir = new File("C:\\Users\\rafam\\OneDrive\\Escritorio\\SoloQ Challenge\\AddingFileds.txt");
 	
-	
+	try {
+		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+			    new FileOutputStream(fileDir), "UTF-8"));
+		try {
+			
+			while(contador<tarjetasGraficasFull.size()){
+			Flash = tarjetasGraficasFull.get(contador);
+			
+			if(contador==tarjetasGraficasFull.size()-1)
+				out.write(Flash.getString());
+			else
+				out.write(Flash.getString()+"\n");
+			contador++;
+			}
+			out.close(); // Closes the stream, flushing it first. Once the stream has been closed, further write() or flush() invocations will cause an IOException to be thrown. Closing a previously closed stream has no effect. 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	} catch (UnsupportedEncodingException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	} catch (FileNotFoundException e2) {
+		// TODO Auto-generated catch block
+		e2.printStackTrace();
+	}
+}
 public void cambiarTarjeta() {
-	
-	//Primero borro la tarjeta, y despu�s busco una nueva
+	finalizar();
+	//Primero borro la tarjeta, y despu�s busco una nueva
 	if(tarjetasGraficas.size()>1) { 
 	tarjetasGraficas.remove(tarjetaVisualizada);
 	
@@ -23,6 +73,7 @@ public void cambiarTarjeta() {
     palabraClave.setText(tarjetaVisualizada.getAleman());
     fraseContexto.setText(tarjetaVisualizada.getFraseContexto());
 	tf.setText("");
+	areaFrases.setText(fraseContexto.getText());
 	}
 	
 	else {
@@ -33,8 +84,8 @@ public void cambiarTarjeta() {
 }
 
 	
-	 JTextField tf; JLabel palabraClave,fraseContexto,etiquetaResultado,borrar; JButton nextButton;
-	 
+	 JTextField tf; JLabel palabraClave,fraseContexto,etiquetaResultado,etiquetaEspaniol; JButton showButton;
+	 JTextArea areaFrases=new  JTextArea(); 
 	 JButton correcto, incorrecto; 
 
 	 InterfazGrafica(){  
@@ -43,46 +94,68 @@ public void cambiarTarjeta() {
 			pp.generadorFlashcards();
 			
 			tarjetasGraficas=pp.getTarjetas();// Esta es la lista de tarjetas que provienen del txt con el vocabulario
-			
+			tarjetasGraficasFull=pp.getTarjetas();//Esto lo vamos a ir introduciendo en el archivo con las fechas, de aqui no se borra ninguna tarjeta
 			tarjetaVisualizada=tarjetasGraficas.get(0);// Esta va a ser la tarjeta que vamos a mostrar para ver si el usuario la sabe o no
-			
+			 
+			 
+			    
+		    JLabel background=new JLabel(new ImageIcon("C:\\Users\\rafam\\OneDrive\\Escritorio\\SoloQ Challenge\\katanaZeroNewMecca.png"));     
 	        tf=new JTextField();  
 	        tf.setBounds(150,120, 150,20);  
 	       
 	        palabraClave=new JLabel(); 
-	        palabraClave.setBounds(50,100, 250,20);    
+	        palabraClave.setBounds(50,180, 250,40);    
 	        palabraClave.setText(tarjetaVisualizada.getAleman());
 	        etiquetaResultado=new JLabel();
 	        etiquetaResultado.setBounds(100,100,400,200);
 	        
+	        areaFrases.setBounds(50,50,800,200);
 	        fraseContexto=new JLabel();
 	        fraseContexto.setText(tarjetaVisualizada.getFraseContexto());
-	        fraseContexto.setBounds(50,50,400,20);
+	        fraseContexto.setFont(new Font("Courier", Font.BOLD,20));
+	        fraseContexto.setBounds(50,50,800,40);
 	        
 	        
-	        borrar=new JLabel();
-	        borrar.setBounds(150,130,220,220);
+	        etiquetaEspaniol=new JLabel();
+	        etiquetaEspaniol.setBounds(300,180,300,40);
 	       
 	          
-	        nextButton=new JButton("Siguiente");  
-	        nextButton.setBounds(150,250,120,30);  
-	        nextButton.addActionListener(this); 
+	        showButton=new JButton("Mostrar");  
+	        showButton.setBounds(150,250,120,30);  
+	        showButton.addActionListener(this); 
 	        
-	        correcto=new JButton("Bien");  
+	        correcto=new JButton("Correcto");  
 	        correcto.setBounds(250,400,120,30);  
 	        correcto.addActionListener(this); 
 	        
-	        incorrecto=new JButton("Repasar de Nuevo");  
+	        incorrecto=new JButton("Incorrecto");  
 	        incorrecto.setBounds(100,400,150,30);  
 	        incorrecto.addActionListener(this); 
-	       
-	        f.add(nextButton);f.add(tf);f.add(palabraClave);f.add(etiquetaResultado);f.add(borrar);
-	        f.add(correcto);f.add(incorrecto);f.add(fraseContexto);
 	        
-	        f.setLayout(null);  
+	        /*f.add(tf);
+	         *f.add(fraseContexto)
+	         */
+	        areaFrases.setFont(fuente1);
+	        areaFrases.setForeground(new Color(224, 205, 0));
+	        areaFrases.setLineWrap(true);
+	        areaFrases.setOpaque(false);
+	        areaFrases.setEditable(false);
+	        areaFrases.append(fraseContexto.getText());
+	        
+	        palabraClave.setForeground(new Color(184, 75, 2));
+	        palabraClave.setFont(fuente1);
+	        
+	        etiquetaEspaniol.setForeground(new Color(255, 255, 255));
+	        etiquetaEspaniol.setFont(fuente1);
+	        
+	        f.add(showButton);f.add(palabraClave);f.add(etiquetaResultado);f.add(etiquetaEspaniol);
+	        f.add(correcto);f.add(incorrecto);f.add(areaFrases);
+	        
+			f.setLayout(new BorderLayout());
+			f.add(background);   
 	        f.setVisible(true);  
-	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	       
+	        
+	       //Con esto sé exactamente
 	        Toolkit myScreen= Toolkit.getDefaultToolkit();
 	        
 	        Dimension Screensize =myScreen.getScreenSize();
@@ -97,21 +170,38 @@ public void cambiarTarjeta() {
 	 public void actionPerformed(ActionEvent e) { 
 		
 		
-		if(e.getSource()==nextButton) {
-			 int comparacion=this.tarjetaVisualizada.getEspaniol().compareToIgnoreCase(tf.getText());
+		if(e.getSource()==showButton) {
+			 etiquetaEspaniol.setText(tf.getText()+tarjetaVisualizada.getEspaniol());
+			
+			
+			//Antigua Version
+			 /*int comparacion=this.tarjetaVisualizada.getEspaniol().compareToIgnoreCase(tf.getText());
 			 	if(comparacion==0) {
 			 			etiquetaResultado.setText("Has Acertado");
 			 			cambiarTarjeta();
 			 
 			 						}
+		
 		 else {
 		 etiquetaResultado.setText("La respuesta correcta era:  "+ tarjetaVisualizada.getEspaniol());
-		 borrar.setText(tf.getText()+tarjetaVisualizada.getEspaniol()+"/"+comparacion);
+		 etiquetaEspaniol.setText(tf.getText()+tarjetaVisualizada.getEspaniol()+"/"+comparacion);
 		 		
 		 	cambiarTarjeta();
 		 	
 		 	}
-			 
+		*/	 
+			
+			
+		}
+		if(e.getSource()==incorrecto) {
+			tarjetaVisualizada.fechaRevisar.add(Calendar.MINUTE, 5);
+			cambiarTarjeta();
+			etiquetaEspaniol.setText("");
+		}
+		if(e.getSource()==correcto) {
+			tarjetaVisualizada.fechaRevisar.add(Calendar.DAY_OF_YEAR, 1);
+			cambiarTarjeta();
+			etiquetaEspaniol.setText("");
 		}
 		
 		 }
@@ -120,18 +210,12 @@ public void cambiarTarjeta() {
 	  
 	 
 	 public void windowClosed(WindowEvent e){
+		 	
 		    System.exit(0);
+		    
 		}
 
-	 class LaminaString extends JPanel{
-		 
-		 public void paintComponent(Graphics g, String str,int x, int y) {
-			 super.paintComponent(g);
-			 g.drawString(str, x, y);
-			 
-		 }
-	
-	 }
+	 
 public static void main(String[] args) {  
 		
 	   
