@@ -4,7 +4,10 @@ import java.awt.event.*;
 import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.util.ArrayList; // import the ArrayList class
+import java.util.Calendar;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -37,13 +40,13 @@ public class Launcher  {
 				    
 				    String[] parse=data.split("-", 3);
 			        
-			        
+				    
 			        
 			        tarjetas.add(new Flashcard(parse[0], parse[1],parse[2]));
 			       
 				}
 
-		       
+				in.close();
 		        
 		      
 		   
@@ -64,6 +67,7 @@ public class Launcher  {
 			System.out.println(e.getMessage());
 	    }
 		
+		
 	}
 	
 	
@@ -79,7 +83,7 @@ public class Launcher  {
 
 
 
-
+// No usar no funciona, pero tampoco es necesario reparlo
 	@Override
 	public String toString() {
 		String rtn="";
@@ -101,7 +105,7 @@ public class Launcher  {
 		// TODO Auto-generated method stub
 		Launcher los =new Launcher();
 		los.generadorFlashcards();
-		System.out.print(los);
+		
 		System.out.println("negar".compareToIgnoreCase("Negar"));
 		
 	

@@ -23,7 +23,14 @@ public class Flashcard {
 		this.fechaRevisar = Calendar.getInstance();
 		
 	}
-	
+	public Flashcard(String aleman, String espaniol,String contexto,Calendar cal) {
+		
+		this.Aleman = aleman;
+		this.Espaniol = espaniol;
+		this.FraseContexto= contexto;
+		this.fechaRevisar = cal;
+		
+	}
 	
 	public String getFraseContexto() {
 		return FraseContexto;

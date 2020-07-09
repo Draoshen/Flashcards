@@ -26,7 +26,17 @@ public class pruebas {
 	
 	private boolean append_to_file=false;
 	
-
+public Calendar parse(String s) {
+	Calendar cal = Calendar.getInstance();
+	SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+	try {
+		cal.setTime(sdf.parse(s));
+	} catch (ParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}// all done
+	return cal;
+}
 public static void main(String[] args) {
 	int contador=0;
 	File fileDir = new File("C:\\Users\\rafam\\OneDrive\\Escritorio\\SoloQ Challenge\\AddingFileds.txt");
