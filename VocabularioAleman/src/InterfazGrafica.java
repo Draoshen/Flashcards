@@ -176,7 +176,7 @@ public void cambiarTarjeta() {
 			f.setLayout(new BorderLayout());
 			f.add(background);   
 	        f.setVisible(true);  
-	        
+	        f.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	       //Con esto sé exactamente cuál es la resolución de la pantalla
 	        Toolkit myScreen= Toolkit.getDefaultToolkit();
 	        
