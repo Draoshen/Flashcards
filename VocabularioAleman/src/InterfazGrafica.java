@@ -9,10 +9,29 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
 
 import javax.swing.*;    
+
+
+
+class sortFlashcards implements Comparator<Flashcard> {
+
+	@Override
+	public int compare(Flashcard o1, Flashcard o2) {
+		// TODO Auto-generated method stub
+		
+		Calendar f1=o1.fechaRevisar;
+		Calendar f2=o2.fechaRevisar;
+		
+		return f1.compareTo(f2);
+	}
+	
+}
 
 public class InterfazGrafica  extends JFrame implements ActionListener{  
 	private Launcher pp=new Launcher();
@@ -20,6 +39,8 @@ public class InterfazGrafica  extends JFrame implements ActionListener{
 	private ArrayList<Flashcard> tarjetasGraficas;
 	private Flashcard tarjetaVisualizada;
 	private Font fuente1 = new Font("Serif", Font.BOLD, 30);
+	JFrame f=new JFrame("Repaso Con Flashcards");   
+	private boolean primeraVez=true;
 /* 
  * 
  * Funciona como es debido, pero ahora el problema está en que lo hace cada vez que cambias de tarjeta
@@ -27,9 +48,10 @@ public class InterfazGrafica  extends JFrame implements ActionListener{
  * 
  */
 public void finalizar() {
-	tarjetasGraficas.size();
+	tarjetasGraficasFull.size();
 	 
 	int contador=0;
+	sort();
 	Flashcard Flash =tarjetasGraficasFull.get(contador);
 	File fileDir = new File("C:\\Users\\rafam\\OneDrive\\Escritorio\\SoloQ Challenge\\AddingFileds.txt");
 	
@@ -90,7 +112,7 @@ public void cambiarTarjeta() {
 
 	 InterfazGrafica(){  
 		 
-		 	JFrame f=new JFrame("Repaso Con Flashcards");   
+		 	
 			pp.generadorFlashcards();
 			
 			tarjetasGraficas=pp.getTarjetas();// Esta es la lista de tarjetas que provienen del txt con el vocabulario
@@ -155,7 +177,7 @@ public void cambiarTarjeta() {
 			f.add(background);   
 	        f.setVisible(true);  
 	        
-	       //Con esto sé exactamente
+	       //Con esto sé exactamente cuál es la resolución de la pantalla
 	        Toolkit myScreen= Toolkit.getDefaultToolkit();
 	        
 	        Dimension Screensize =myScreen.getScreenSize();
@@ -171,10 +193,37 @@ public void cambiarTarjeta() {
 		
 		
 		if(e.getSource()==showButton) {
+			if(primeraVez) {
+			
 			 etiquetaEspaniol.setText(tf.getText()+tarjetaVisualizada.getEspaniol());
+			 primeraVez=false;	 
+			 showButton.setText("Ocultar");
 			
-			
-			//Antigua Version
+			 
+			}
+			else {
+				etiquetaEspaniol.setText(""); 
+				 showButton.setText("Mostrar");
+				 
+				 primeraVez=true;
+				 
+				
+			}
+		}
+		
+		
+		
+		if(e.getSource()==incorrecto) {
+			tarjetaVisualizada.fechaRevisar.add(Calendar.MINUTE, 5);
+			cambiarTarjeta();
+			etiquetaEspaniol.setText("");
+		}
+		if(e.getSource()==correcto) {
+			tarjetaVisualizada.fechaRevisar.add(Calendar.DAY_OF_YEAR, 1);
+			cambiarTarjeta();
+			etiquetaEspaniol.setText("");
+		}
+	 }	//Antigua Version
 			 /*int comparacion=this.tarjetaVisualizada.getEspaniol().compareToIgnoreCase(tf.getText());
 			 	if(comparacion==0) {
 			 			etiquetaResultado.setText("Has Acertado");
@@ -192,25 +241,18 @@ public void cambiarTarjeta() {
 		*/	 
 			
 			
-		}
-		if(e.getSource()==incorrecto) {
-			tarjetaVisualizada.fechaRevisar.add(Calendar.MINUTE, 5);
-			cambiarTarjeta();
-			etiquetaEspaniol.setText("");
-		}
-		if(e.getSource()==correcto) {
-			tarjetaVisualizada.fechaRevisar.add(Calendar.DAY_OF_YEAR, 1);
-			cambiarTarjeta();
-			etiquetaEspaniol.setText("");
-		}
 		
-		 }
 		
+	
 		 
-	  
+	 public void sort() {
+		 
+		 tarjetasGraficasFull.sort(new sortFlashcards());
+		 
+	 }
 	 
 	 public void windowClosed(WindowEvent e){
-		 	
+		 	System.out.print("Ayuda");
 		    System.exit(0);
 		    
 		}
